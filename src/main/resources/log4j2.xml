@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ISO8601} %-5p %C{5} %M %msg%n" />
+        </Console>
+
+        <RollingFile name="RollingFile" filename="log/rest.log"
+                     filepattern="${logPath}/%d{YYYYMMddHHmmss}-rest.log">
+            <PatternLayout pattern="%d{ISO8601} %-5p %C{5} %M %msg%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="TRACE" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+
+</Configuration>

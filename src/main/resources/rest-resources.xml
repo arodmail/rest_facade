@@ -1,0 +1,9 @@
+<resources>
+    <resource name="Resource">
+        <uri>/resource</uri>
+        <arg-class>org.rest.facade.impl.ResourceArg</arg-class>
+        <entity-class>org.rest.facade.impl.Resource</entity-class>
+        <service-stub>org.rest.facade.impl.ResourceServiceImpl</service-stub>
+        <!--<async-handle>org.rest.facade.impl.ResourceRequestToken</async-handle>-->
+    </resource>
+</resources>
