@@ -13,13 +13,14 @@ git clone https://github.com/arodmail/rest_facade/
 #### 2. Run gradle wrapper task
 
 ```bash
+cd rest_facade
 gradle wrapper
 ```
 
 #### 3. Run gradle build
 
 ```bash
-gradlew build
+./gradlew build
 ```
 
 #### 4. Start Server
