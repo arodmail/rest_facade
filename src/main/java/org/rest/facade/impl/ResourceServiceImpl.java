@@ -13,6 +13,15 @@ public class ResourceServiceImpl implements ResourceService {
 
     private final Logger logger = LogManager.getLogger(getClass().getName());
 
+    /**
+     * Returns a SearchResult of RestResource that match the criteria in the
+     * given RestArg.
+     *
+     * @param arg an instance of an implementation of the RestArg interface.
+     * @return a SearchResult of RestResource that match the criteria defined in
+     * the given RestArg.
+     * @throws ServiceException if an error occurs.
+     */
     @Override
     public SearchResult<?> findAll(RestArg arg) throws ServiceException {
         SearchResult<Resource> searchResult = new SearchResult<>();
@@ -29,6 +38,14 @@ public class ResourceServiceImpl implements ResourceService {
         return searchResult;
     }
 
+    /**
+     * Returns a RestResource that matches the resource id on the RestArg
+     *
+     * @param arg an instance of an implementation of the RestArg interface.
+     * @return RestResource that match the criteria defined in
+     * the given RestArg.
+     * @throws ServiceException if an error occurs.
+     */
     @Override
     public RestResource find(RestArg arg) throws ServiceException {
         ResourceArg resourceArg = (ResourceArg)arg;
@@ -40,6 +57,13 @@ public class ResourceServiceImpl implements ResourceService {
         return resource;
     }
 
+    /**
+     * Saves (persists) or updates (commits) the given entity into the system.
+     *
+     * @param resource the RestResource to save or update.
+     * @return the updated RestResource.
+     * @throws ServiceException if an error occurs.
+     */
     @Override
     public RestResource save(RestResource resource) throws ServiceException {
         Resource incomingResource = (Resource)resource;
@@ -51,6 +75,12 @@ public class ResourceServiceImpl implements ResourceService {
         return savedResource;
     }
 
+    /**
+     * Removes the given RestResource from the system.
+     *
+     * @param resource the resource to remove.
+     * @throws ServiceException if an error occurs.
+     */
     @Override
     public void remove(RestResource resource) throws ServiceException {
         logger.trace("Start remove()");

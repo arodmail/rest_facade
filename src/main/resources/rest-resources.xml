@@ -4,6 +4,14 @@
         <arg-class>org.rest.facade.impl.ResourceArg</arg-class>
         <entity-class>org.rest.facade.impl.Resource</entity-class>
         <service-stub>org.rest.facade.impl.ResourceServiceImpl</service-stub>
-        <!--<async-handle>org.rest.facade.impl.ResourceRequestToken</async-handle>-->
     </resource>
+
+    <resource name="AsyncResource">
+        <uri>/asyncresource</uri>
+        <arg-class>org.rest.facade.impl.ResourceArg</arg-class>
+        <entity-class>org.rest.facade.impl.Resource</entity-class>
+        <service-stub>org.rest.facade.impl.async.AsyncResourceServiceImpl</service-stub>
+        <async-handle>org.rest.facade.impl.async.AsyncResourceHandle</async-handle>
+    </resource>
+
 </resources>

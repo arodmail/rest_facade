@@ -89,6 +89,7 @@ public class ServiceFactory {
             try {
 
                 // serviceInstance = (AsyncRestService) SpringUtil.getBean(serviceBeanName);
+                throw new Exception();
 
             } catch (Exception e) {
 

@@ -27,9 +27,9 @@ gradle wrapper
 ```bash
 ./gradlew run
 ```
+
 ```bash
-...
-YYYY-MM-DDT00:00:00,000 DEBUG org.rest.facade.Main main Tomcat listening on Port 4000
+YYYY-MM-DDTHH:MM:SS,000 DEBUG org.rest.facade.Main main Tomcat listening on Port 4000
 ```
 
 ## Sample Requests
@@ -39,7 +39,7 @@ YYYY-MM-DDT00:00:00,000 DEBUG org.rest.facade.Main main Tomcat listening on Port
 curl -X GET http://localhost:4000/rest/
 ```
 
-```json   
+```json
 {
      "resources" : 
      [ 
@@ -56,11 +56,11 @@ curl -X GET http://localhost:4000/rest/
 curl -X GET http://localhost:4000/rest/Resource/123
 ```
 
-```json   
+```json
 {
   "id" : "123",
   "name" : "name-123",
-  "lastModified" : "YYYY-MM-DDT00:00:00.000-0700"
+  "lastModified" : "YYYY-MM-DDTHH:MM:SS.000-0700"
 }
 ```
 
@@ -69,11 +69,11 @@ curl -X GET http://localhost:4000/rest/Resource/123
 curl -X POST -d '{"name":"name-234"}' http://localhost:4000/rest/Resource/
 ```
 
-```json   
+```json
 {
   "id" : "1",
   "name" : "name-234",
-  "lastModified" : "YYYY-MM-DDT00:00:00.000-0700"
+  "lastModified" : "YYYY-MM-DDTHH:MM:SS.000-0700"
 }
 ```
 
@@ -82,11 +82,11 @@ curl -X POST -d '{"name":"name-234"}' http://localhost:4000/rest/Resource/
 curl -X PUT -d '{"id":"1","name":"rename-123"}' http://localhost:4000/rest/Resource/
 ```
 
-```json   
+```json
 {
   "id" : "1",
   "name" : "rename-123",
-  "lastModified" : "YYYY-MM-DDT00:00:00.000-0700"
+  "lastModified" : "YYYY-MM-DDTHH:MM:SS.000-0700"
 }
 ```
 
@@ -95,14 +95,63 @@ curl -X PUT -d '{"id":"1","name":"rename-123"}' http://localhost:4000/rest/Resou
 curl -v -X DELETE http://localhost:4000/rest/Resource/123
 ```
 
-```bash  
-* Trying ::1...
-* TCP_NODELAY set
-* Connected to localhost (::1) port 4000 (#0)
-> DELETE /rest/resource/123 HTTP/1.1
-> Host: localhost:4000
-> User-Agent: curl/7.54.0
-> Accept: */*
-> 
+```bash
 < HTTP/1.1 200 OK
+```
+
+#### Asynchronous Requests
+
+##### Step 1: Send Request
+
+```bash
+curl -v -X POST -d '{\"name\":\"async-name\"}' http://localhost:4000/rest/AsyncResource
+```
+
+```bash
+< HTTP/1.1 202 Accepted
+< Location: /queue/AsyncResource/123
+```
+
+```json
+{
+  "status" : "PROCESSING",
+  "progress" : "0"
+}
+```
+
+##### Step 2: Check Status
+
+```bash
+curl -v -X GET http://localhost:4000/rest/queue/AsyncResource/123
+```
+
+```bash
+< HTTP/1.1 200 OK
+< Location: /rest/async/AsyncResource/123
+```
+
+```json
+{
+  "status" : "COMPLETED",
+  "progress" : "100"
+}
+```
+
+##### Step 3: Get Result
+
+```bash
+curl -v -X GET http://localhost:4000/rest/async/AsyncResource/123
+```
+
+```json
+{
+  "items" : 
+  [ 
+       {
+         "id" : "0",
+         "name" : "asyncname-0",
+         "lastModified" : "YYYY-MM-DDTHH:MM:SS.000-0700"
+       }
+  ]
+}
 ```

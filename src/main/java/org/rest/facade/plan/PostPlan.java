@@ -106,6 +106,8 @@ public class PostPlan extends BasePlan {
                     headers.put(AsyncResponse.LOCATION, "/" + AsyncResponse.QUEUE + "/" + resourceType + "/" + asyncHandle.getId());
                     response.setHeaders(headers);
                     response.setCode(202); // Accepted
+                    ((AsyncResponse) response).setProgress("0");
+                    ((AsyncResponse) response).setStatus(AsyncRestService.PROCESSING);
 
                 } else {
 
