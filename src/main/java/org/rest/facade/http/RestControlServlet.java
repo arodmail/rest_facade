@@ -208,23 +208,15 @@ public class RestControlServlet extends HttpServlet {
     private String negotiateContentType(HttpServletRequest request, HttpServletResponse response,
                                         RestResponse restResponse) {
         String responseContent = "";
-        String headerFormat = StringUtils.defaultString(request.getHeader(RestResponse.ACCEPT));
 
-        // Change it to "contains" for now to solve a bug with Chrome on iOS
-        // when its appending more stuff a part from application/json
-        if (headerFormat.contains(RestResponse.JSON_MIME)) {
-            responseContent = restResponse.toJSON();
-            response.setContentType(RestResponse.JSON_MIME);
-        } else {
-            // default to JSON
-            responseContent = restResponse.toJSON();
-            response.setContentType(RestResponse.JSON_MIME);
+        // default to JSON
+        responseContent = restResponse.toJSON();
+        response.setContentType(RestResponse.JSON_MIME);
 
-            // check for custom callback and wrap response if present
-            if (request.getParameter(RestResponse.CALLBACK) != null) {
-                String callback = request.getParameter(RestResponse.CALLBACK);
-                responseContent = callback + "(" + responseContent + ")";
-            }
+        // check for custom callback and wrap response if present
+        if (request.getParameter(RestResponse.CALLBACK) != null) {
+            String callback = request.getParameter(RestResponse.CALLBACK);
+            responseContent = callback + "(" + responseContent + ")";
         }
 
         // add response headers

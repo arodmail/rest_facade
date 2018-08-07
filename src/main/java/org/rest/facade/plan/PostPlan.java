@@ -29,8 +29,6 @@ import java.util.Map;
  */
 public class PostPlan extends BasePlan {
 
-    private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
-
     /**
      * Creates a new PostPlan
      *
@@ -81,18 +79,21 @@ public class PostPlan extends BasePlan {
     /**
      * Persists a set of resources, read from the HTTP request body.
      */
-    private CommonResponse saveResources(CommonResponse response, String resourceType) throws ServiceException {
+    private CommonResponse saveResources(CommonResponse response, String resourceType)
+            throws ServiceException {
 
         PayloadReader payloadReader = new PayloadReader();
 
         Class<?> clazz = DomainFactory.getEntityClass(resourceType);
 
         try {
-            RestService service = ServiceFactory.createService(resourceType);
+            RestService service =
+                    ServiceFactory.createService(resourceType);
 
             if (service == null) {
 
-                AsyncRestService asyncService = ServiceFactory.createAsyncService(resourceType);
+                AsyncRestService asyncService =
+                        ServiceFactory.createAsyncService(resourceType);
 
                 if (asyncService != null) {
 
@@ -129,7 +130,7 @@ public class PostPlan extends BasePlan {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ServiceException();
         }
 
         return response;

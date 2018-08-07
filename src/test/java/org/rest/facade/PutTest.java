@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 public class PutTest {
 
     @Test
-    public void testPostResource() throws Exception {
+    public void testPutSingleResource() throws Exception {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -30,7 +30,7 @@ public class PutTest {
         when(request.getRequestURL()).thenReturn(new StringBuffer("/resource/1"));
         when(request.getPathInfo()).thenReturn("/resource/1");
         when(request.getContentType()).thenReturn("application/json");
-        when(request.getInputStream()).thenReturn((ServletInputStream)getInputStreamPayload());
+        when(request.getInputStream()).thenReturn((ServletInputStream)getInputStreamPayload(1));
 
         RestControlServlet servlet = new RestControlServlet();
         servlet.init();
@@ -43,15 +43,37 @@ public class PutTest {
         arr.add(jsonArray);
     }
 
-    private InputStream getInputStreamPayload() {
-        StringBuilder payLoadStr = new StringBuilder();
-        payLoadStr.append("{");
-        payLoadStr.append("\"name\" : \"name-1\",");
-        payLoadStr.append("\"id\" : \"1\"");
-        payLoadStr.append("}");
+    @Test
+    public void testPutMultipleResource() throws Exception {
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+
+        when(request.getMethod()).thenReturn("PUT");
+        when(request.getRequestURL()).thenReturn(new StringBuffer("/resource/"));
+        when(request.getPathInfo()).thenReturn("/resource/");
+        when(request.getContentType()).thenReturn("application/json");
+        when(request.getInputStream()).thenReturn((ServletInputStream)getInputStreamPayload(10));
+
+        RestControlServlet servlet = new RestControlServlet();
+        servlet.init();
+        servlet.doPut(request, response);
+        servlet.destroy();
+        writer.flush();
+
+        String jsonArray = stringWriter.toString();
+        JsonArray arr = new JsonArray();
+        arr.add(jsonArray);
+    }
+
+    private InputStream getInputStreamPayload(int count) {
 
         ByteArrayInputStream byteArrayInputStream =
-                new ByteArrayInputStream(payLoadStr.toString().getBytes(StandardCharsets.UTF_8));
+                new ByteArrayInputStream(createPayload(count).getBytes(StandardCharsets.UTF_8));
 
         ServletInputStream servletInputStream = new ServletInputStream() {
 
@@ -78,6 +100,20 @@ public class PutTest {
         };
 
         return servletInputStream;
+    }
+
+    private String createPayload(int count) {
+        StringBuilder payLoadStr = new StringBuilder();
+        payLoadStr.append("[");
+        for (int i = 0; i < count; i++) {
+            payLoadStr.append("{");
+            payLoadStr.append("\"name\" : \"rename-" + i + "\",");
+            payLoadStr.append("\"id\" : \"" + i + "\"");
+            payLoadStr.append("},");
+        }
+        String result = payLoadStr.substring(0,payLoadStr.length()-1); // but last ,
+        result += "]";
+        return result;
     }
 
 }

@@ -14,10 +14,7 @@ public interface RestResponse {
     String ACCEPT = "Accept";
     String ACCEPT_ENCODING = "Accept-Encoding";
     String CONTENT_ENCODING = "Content-Encoding";
-    String CONTENT_DISPOSITION = "Content-Disposition";
     String FORMAT = "format";
-    String CSV_MIME = "text/csv";
-    String CSV = "csv";
     String JSON_MIME = "application/json";
     String CALLBACK = "callback";
     String GZIP = "gzip";

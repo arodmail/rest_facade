@@ -116,7 +116,7 @@ public class CorsFilter implements Filter {
         } else {
             if (origin == null) //On the preflight, make sure we have a valid origin
             {
-                logger.warn("CorsFilter: This is an OPTIONS action, so origin is required");
+                logger.warn("Origin header is required for OPTIONS request");
                 throw new ServletException(request.getClass().getName() + "::" + response.getClass().getName());
             }
         }
@@ -130,7 +130,7 @@ public class CorsFilter implements Filter {
             return;  //nothing to validate
         }
 
-        String[] domains = {""}; //
+        String[] domains = {""};
         if (domains != null) {
             for (String domain : domains) {
                 if (origin.contains(domain.trim())) {

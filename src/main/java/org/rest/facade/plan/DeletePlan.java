@@ -88,29 +88,6 @@ public class DeletePlan extends BasePlan {
                 commonResponse.setCode(200);
 
             }
-            case RequestPath.FILE: {
-                String path = requestPath.getFragment(1);
-                RestService service = ServiceFactory.createService(path);
-
-                // create a RestArg from the request path
-                StringBuilder queryString = new StringBuilder();
-                RestArg arg = RestArgFactory.createArg(path, queryString.toString());
-                RestResource result = service.find(arg);
-
-                if (result != null) {
-
-                    service.remove(result);
-                    commonResponse.setCode(200);
-
-                } else {
-
-                    commonResponse.setCode(404);
-                    commonResponse.setMsg("Resource not found.");
-
-                }
-
-            }
-
             break;
 
         }

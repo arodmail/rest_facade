@@ -49,11 +49,6 @@ public abstract class BasePlan implements ResponsePlan {
      * processing a client request.
      */
     @Override
-    public RestResponse execute() throws ServiceException {
-
-        // implemented by a concrete subclass
-        return null;
-
-    }
+    public abstract RestResponse execute() throws ServiceException;
 
 }

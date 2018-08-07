@@ -1,10 +1,9 @@
 package org.rest.facade.http;
 
+import com.google.gson.*;
 import org.rest.facade.RestArg;
 import org.rest.facade.RestResource;
 import org.rest.facade.marshall.JacksonWrapper;
-import org.rest.facade.response.RestResponse;
-import org.rest.facade.support.XmlTag;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -34,8 +33,18 @@ public class PayloadReader {
 
     private <E extends RestResource> List<E> readJsonPayload(String payLoad, Class<E> clazz) {
         List<E> resources = new ArrayList<E>();
-        E resource = JacksonWrapper.fromJSON(payLoad, clazz);
-        resources.add(resource);
+        if (!payLoad.startsWith("[") && !payLoad.endsWith("]")) {
+            E resource = JacksonWrapper.fromJSON(payLoad, clazz);
+            resources.add(resource);
+        } else {
+            JsonParser parser = new JsonParser();
+            JsonElement rootObj = parser.parse(payLoad);
+            JsonArray items = rootObj.getAsJsonArray();
+            for (JsonElement item : items) {
+                E resource = JacksonWrapper.fromJSON(item.toString(), clazz);
+                resources.add(resource);
+            }
+        }
         return resources;
     }
 

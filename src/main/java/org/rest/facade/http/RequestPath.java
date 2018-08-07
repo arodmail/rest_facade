@@ -39,17 +39,6 @@ public class RequestPath {
     }
 
     /**
-     * Returns the first path fragment. Given /path1/path2/, returns "path1".
-     */
-    public String getFirstFragment() {
-        String result = "";
-        if (hasFragments()) {
-            result = pathFragments[0];
-        }
-        return result;
-    }
-
-    /**
      * Returns the first path fragment. Given /path1/path2/, returns "path2".
      */
     public String getLastFragment() {
